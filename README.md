@@ -16,5 +16,5 @@ Here are some ideas to get you started:
 -->
 
 <!--START_SECTION:waka-->
-JavaScript
+SHOW_LANGUAGE
 <!--END_SECTION:waka-->
