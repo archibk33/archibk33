@@ -11,7 +11,7 @@ public static void main(String[] args) {
         artem.setTelegram("https://t.me/spacexln");
         artem.setMail("archibk32@yandex.ru");
         artem.setSpecialization("Full Stack Developer");
-    }
+}
 ```
 
 <!--START_SECTION:waka-->
