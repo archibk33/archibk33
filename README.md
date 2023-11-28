@@ -28,54 +28,30 @@ I work as a system analyst for a grocery company. In addition to writing require
 
 Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
-## **Education**
+## **EDUCATION**
 
 ### **K.G. Razumovsky MSUTM, Moscow**
 ### **Bachelor
 2015 - Present
 
+## **COURSES**
+### **Skill Factory** **Yandex Practicum**  
+Specializations: `Cisco RW\SW`, `System analysis`, `Full Stack Developer`.
 
-## **Courses**
+## **PERSONAL QUALITIES** 
+- Ready to learn and improve 24\7;
+- Good logical thinking;
+- Able to hold a large amount of information in memory;
+- Well-developed empathy and visual thinking;
+- Sociable;
+- I am purposeful, I always work for results, I bring new ideas to improve and improve the quality of work.
+- People on whom I project the vector of attention: Linus Torvalds, Elon Musk, Mark Zuckerberg, Dennis Ritchie.
 
-### **Skill Factory**
-### **Cisco RW\SW
-2014-2014 - Present
+In my free time I am fond of reading fiction (classical), technical literature, psychology, philosophy, astronomy.
 
-### **Yandex Practicum**
-### **System analysis
-2022-2022 - Present
+I am studying Linux OS at the low level of architecture.
 
-### **Yandex Practicum**
-### **Full Stack Developer
-2022 - now time 
-
-
-
-
-
-
- ### **** 
-
- 2013-2014
-
- **Coursework**: `Cisco RW\SW`;
-
-  ### **Yandex Practicum**
-
-  2015-2017
-
- **Coursework**: `Information technology`, `English`, `Accounts`, `Business`, `Mathematics`, `Economics`.
-
-## **EXTRA-CURRICULAR ACTIVITIES** 
-- **Volunteer at Young Red Cross (YRC)**
-  - Coordinated in organizing training programs and blood camps. 
-  - Volunteered in organizing cleanliness training programs for underprivileged children.  
-  - Took part in team-building activities.
-
-- Class Representative
-
-  
-
+I love cycling, airsoft, firearms, flying on professional exercise machines (Boing 737NG).
 
 
 <!--START_SECTION:waka-->
