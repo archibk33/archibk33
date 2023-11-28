@@ -14,6 +14,8 @@ public static void main(String[] args) {
         artem.setWorkExp("8 years old")
 }
 ```
+## **TECHNICAL SKILLS**
+**Skills**: `SQL`, `Automation`, `Bash`, `Git`, `Linux`.
 
 Tecnology Stack
 - PHP
