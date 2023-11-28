@@ -29,8 +29,30 @@ I work as a system analyst for a grocery company. In addition to writing require
 Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
 ## **Education**
+
 ### **K.G. Razumovsky MSUTM, Moscow**
-2015 - Present  
+### **Bachelor
+2015 - Present
+
+
+## **Courses**
+
+### **Skill Factory**
+### **Cisco RW\SW
+2014-2014 - Present
+
+### **Yandex Practicum**
+### **System analysis
+2022-2022 - Present
+
+### **Yandex Practicum**
+### **Full Stack Developer
+2022 - now time 
+
+
+
+
+
 
  ### **** 
 
@@ -38,7 +60,7 @@ Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
  **Coursework**: `Cisco RW\SW`;
 
-  ### **12th - Shiksha Bharti Sr Sec School, Rohtak**
+  ### **Yandex Practicum**
 
   2015-2017
 
@@ -52,23 +74,6 @@ Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
 - Class Representative
 
-
-
-
-Tecnology Stack
-- PHP
-- PostgreSQL
-- MySQL
-- NodeJS
-- Java
-- React
-- Express
-- Nest
-- Node
-- Docker
-- Python
-- Linux
-- TCP\IP
   
 
 
