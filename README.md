@@ -11,8 +11,27 @@ public static void main(String[] args) {
         artem.setTelegram("https://t.me/spacexln");
         artem.setMail("archibk32@yandex.ru");
         artem.setSpecialization("Full Stack Developer");
+        artem.setWorkExp("8 years old")
 }
 ```
+
+Tecnology Stack
+- PHP
+- PostgreSQL
+- MySQL
+- NodeJS
+- Java
+- React
+- Express
+- Nest
+- Node
+- Docker
+- Python
+- Linux
+- TCP\IP
+  
+
+
 
 <!--START_SECTION:waka-->
 
