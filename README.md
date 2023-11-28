@@ -1,17 +1,18 @@
 ### Hi there 👋
 
 
-Here are some ideas to get you started:
-
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
-
+```JAVA
+public static void main(String[] args) {
+        Developer artem = new Developer();
+        artem.setName("Artem");
+        artem.setAge(30);
+        artem.setGender("Male");
+        artem.setLocation("Russia");
+        artem.setTelegram("https://t.me/spacexln");
+        artem.setMail("archibk32@yandex.ru");
+        artem.setSpecialization("Full Stack Developer");
+    }
+```
 
 <!--START_SECTION:waka-->
 
