@@ -1,4 +1,4 @@
-## Hello World! 😎
+## Hello World 😎
 
 
 ```JAVA
@@ -14,7 +14,7 @@ public static void main(String[] args) {
         artem.setWorkExp("8 years old")
 }
 ```
-## **TECHNICAL SKILLS**
+## **TECHNICAL SKILLS** 👀
 **Skills**: `SQL`, `Linux`, `Bash`, `Git`, `Docker`, `TCP\IP`, `VoIP`.
 ## **Work Experience**
 ### **System Analyst and software engineer** 
@@ -28,7 +28,7 @@ I work as a system analyst for a grocery company. In addition to writing require
 
 Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
-## **EDUCATION**
+## **EDUCATION** 🤯
 
 ### **K.G. Razumovsky MSUTM, Moscow**
 ### **Bachelor
@@ -38,7 +38,7 @@ Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 ### **Skill Factory** **Yandex Practicum**  
 Specializations: `Cisco RW\SW`, `System analysis`, `Full Stack Developer`.
 
-## **PERSONAL QUALITIES** 
+## **PERSONAL QUALITIES** 😏
 - Ready to learn and improve 24\7;
 - Good logical thinking;
 - Able to hold a large amount of information in memory;
@@ -48,11 +48,10 @@ Specializations: `Cisco RW\SW`, `System analysis`, `Full Stack Developer`.
 - People on whom I project the vector of attention: Linus Torvalds, Elon Musk, Mark Zuckerberg, Dennis Ritchie.
 
 In my free time I am fond of reading fiction (classical), technical literature, psychology, philosophy, astronomy.
-
 I am studying Linux OS at the low level of architecture.
-
 I love cycling, airsoft, firearms, flying on professional exercise machines (Boing 737NG).
 
+My coding time 😤
 
 <!--START_SECTION:waka-->
 
