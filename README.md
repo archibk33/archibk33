@@ -15,31 +15,28 @@ public static void main(String[] args) {
 }
 ```
 ## **TECHNICAL SKILLS**
-**Skills**: `SQL`, `Automation`, `Bash`, `Git`, `Linux`.
+**Skills**: `SQL`, `Linux`, `Bash`, `Git`, `Docker`, `TCP\IP`, `VoIP`.
 ## **Work Experience**
-### **Infrastructure Services Engineer at Wipro Technologies** 
+### **System Analyst and software engineer** 
 *September 2020 - Present*
 
-Hands-on with: `Automic automation tool`, `Service now`, `Bash`, ``.
+Hands-on with: `Monitoring system`, `FreeSwitch`, `Asterisk`.
 
-Working as a UC4 Job Scheduler and I am responsible for batch application scheduling, monitoring and troubleshooting. Responsibilities include supporting daily batch processing activities, working with other project-related cross-function teams and coordinating activities with all technical support teams.
+I work as a system analyst for a grocery company. In addition to writing requirements and creating prototypes, my responsibilities also include small development and automation.
 
-## **TECHNICAL SKILLS**
-**Skills**: `SQL`, `Automation`, `Bash`, `Git`, `Linux`.
+**Programming Languages**: `Core Java`, `Java Script`, `HTML\CSS`, `Lua`, `PHP`.
 
-**Programming Languages**: `C/C++`, `Core Java`, `Java Script`.
-
-Software: `Dev C++`, `VS Code`, `Eclipse`, `Service Now`, `UC4`.
+Software: `WebStorm`, `VS Code`, `IntelliJ IDEA`, `DataGrip`.
 
 ## **Education**
-### **M.Tech - BITS PILANI**
-2021 - Present  
+### **K.G. Razumovsky MSUTM, Moscow**
+2015 - Present  
 
- ### **BCA - Maharishi Dayanand University, Rohtak** 
+ ### **** 
 
- 2017-2020
+ 2013-2014
 
- **Coursework**: `Software Engineering`; `Algorithms Analysis and Design`; `Data Structures`; `Programming Languages (C/C++ and Core Java)`, `Operating System`, `Database Management System`, `Mathematics`.
+ **Coursework**: `Cisco RW\SW`;
 
   ### **12th - Shiksha Bharti Sr Sec School, Rohtak**
 
