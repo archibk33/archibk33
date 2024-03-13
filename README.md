@@ -56,17 +56,17 @@ My coding time 😤
 <!--START_SECTION:waka-->
 
 ```rust
-From: 18 November 2023 - To: 10 March 2024
+From: 18 November 2023 - To: 11 March 2024
 
-Total Time: 20 hrs 18 mins
+Total Time: 24 hrs 53 mins
 
-CSS            13 hrs 7 mins   >>>>>>>>>>>>>>>>---------   64.59 %
-HTML           3 hrs 3 mins    >>>>---------------------   15.06 %
-JavaScript     2 hrs 26 mins   >>>----------------------   12.05 %
-Markdown       27 mins         >------------------------   02.22 %
-TypeScript     25 mins         >------------------------   02.08 %
-textmate       5 mins          -------------------------   00.48 %
-TSConfig       0 secs          -------------------------   00.03 %
+CSS            13 hrs 7 mins   >>>>>>>>>>>>>------------   52.70 %
+JavaScript     6 hrs 58 mins   >>>>>>>------------------   28.03 %
+HTML           3 hrs 3 mins    >>>----------------------   12.29 %
+Markdown       27 mins         -------------------------   01.81 %
+TypeScript     25 mins         -------------------------   01.70 %
+textmate       5 mins          -------------------------   00.39 %
+TSConfig       0 secs          -------------------------   00.02 %
 Shell Script   0 secs          -------------------------   00.00 %
 ```
 
