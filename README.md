@@ -56,7 +56,7 @@ My coding time 😤
 <!--START_SECTION:waka-->
 
 ```rust
-From: 18 November 2023 - To: 09 May 2024
+From: 18 November 2023 - To: 10 May 2024
 
 Total Time: 57 hrs 41 mins
 
