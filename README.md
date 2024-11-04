@@ -56,11 +56,11 @@ My coding time 😤
 <!--START_SECTION:waka-->
 
 ```rust
-From: 18 November 2023 - To: 01 November 2024
+From: 18 November 2023 - To: 03 November 2024
 
-Total Time: 76 hrs 50 mins
+Total Time: 76 hrs 51 mins
 
-Java              39 hrs 56 mins  >>>>>>>>>>>>>------------   51.96 %
+Java              39 hrs 56 mins  >>>>>>>>>>>>>------------   51.97 %
 JavaScript        14 hrs 14 mins  >>>>>--------------------   18.53 %
 CSS               13 hrs 44 mins  >>>>---------------------   17.89 %
 HTML              5 hrs 14 mins   >>-----------------------   06.82 %
