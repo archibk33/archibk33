@@ -13,9 +13,17 @@ public class Developer {
         artem.setContact("📬 archibk32@yandex.ru");
 }
 ```
+ О Себе
+Анализирую, автоматизирую, систематизирую
 
+Работаю с VoIP, мониторингом, Linux
 
-📈 GitHub Stats
+Увлекаюсь архитектурой ОС и низкоуровневым кодом
+
+Читаю: техлит, психологию, философию
+
+Хобби: 🚴, 🔫, ✈️ (Boeing 737NG flight simulator)
+
 
 
 🛠️ Tech Stack
