@@ -1,18 +1,36 @@
 ## Hello World 😎
 
 
-```JAVA
 public class Developer {
+
     public static void main(String[] args) {
-        Developer artem = new Developer();
-        artem.setName("Artem");
-        artem.setLocation("🌍 Russia");
-        artem.setSpecialization("🧠Beginner architect");
-        artem.setExperience("💼 10+ years");
-        artem.setLanguages(List.of("Java", "Python", "JavaScript", "PHP", "Lua"));
-        artem.setContact("📬 archibk32@yandex.ru");
+        Developer artem = new Developer("Artem")
+            .setLocation("🌍 Russia")
+            .setRole("🧠 Beginner Architect")
+            .setExperience("💼 10+ years")
+            .setLanguages("Java", "Python", "JavaScript", "PHP", "Lua")
+            .setSpecialties("Full Stack", "System Analysis", "VoIP", "Linux")
+            .setContact("📬 archibk32@yandex.ru", "Telegram: @tirexswa");
+
+        artem.run();
+    }
+
+    public Developer(String name) {
+        System.out.println("🚀 Initializing Developer: " + name);
+    }
+
+    // setters returning 'this' for chaining
+    public Developer setLocation(String location) { /* ... */ return this; }
+    public Developer setRole(String role) { /* ... */ return this; }
+    public Developer setExperience(String exp) { /* ... */ return this; }
+    public Developer setLanguages(String... langs) { /* ... */ return this; }
+    public Developer setSpecialties(String... specialties) { /* ... */ return this; }
+    public Developer setContact(String... contacts) { /* ... */ return this; }
+
+    public void run() {
+        System.out.println("🧠 Developer online. Ready to create, automate, and innovate.");
+    }
 }
-```
 
 <p align="center">
   <!-- Languages -->
