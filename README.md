@@ -2,16 +2,15 @@
 
 
 ```JAVA
-public static void main(String[] args) {
+public class Developer {
+    public static void main(String[] args) {
         Developer artem = new Developer();
         artem.setName("Artem");
-        artem.setAge(30);
-        artem.setGender("Male");
-        artem.setLocation("Russia");
-        artem.setTelegram("https://t.me/spacexln");
-        artem.setMail("archibk32@yandex.ru");
-        artem.setSpecialization("Full Stack Developer");
-        artem.setWorkExp("8 years old")
+        artem.setLocation("🌍 Russia");
+        artem.setSpecialization("🧠 Full Stack | System Analyst");
+        artem.setExperience("💼 8+ years");
+        artem.setLanguages(List.of("Java", "Python", "JavaScript", "PHP", "Lua"));
+        artem.setContact("📬 archibk32@yandex.ru");
 }
 ```
 ## **TECHNICAL SKILLS** 👀
