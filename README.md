@@ -1,6 +1,6 @@
 ## Hello World 😎
 
-
+```JAVA
 public class Developer {
 
     public static void main(String[] args) {
@@ -31,6 +31,7 @@ public class Developer {
         System.out.println("🧠 Developer online. Ready to create, automate, and innovate.");
     }
 }
+```
 
 <p align="center">
   <!-- Languages -->
