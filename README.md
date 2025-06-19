@@ -1,17 +1,20 @@
 ## Hello World 😎
 
 ```JAVA
+## 🔗 Hello World 😎
+
+```java
 public class DeveloperProfile {
 
     public static void main(String[] args) {
         Developer artem = new Developer();
-        artem.name = "Artem";
-        artem.role = "🧠 Beginner Architect";
+        artem.name       = "Artem";
+        artem.role       = "🧠 Beginner Architect";
         artem.experience = "💼 10+ years";
-        artem.location = "🌍 Russia";
-        artem.languages = new String[]{"Java", "Python", "JavaScript", "PHP", "Lua"};
-        artem.email = "📬 archibk32@yandex.ru";
-        artem.telegram = "@tirexswa";
+        artem.location   = "🌍 Russia";
+        artem.languages  = new String[]{"Java", "Python", "JavaScript", "PHP", "Lua"};
+        artem.email      = "📬 archibk32@yandex.ru";
+        artem.telegram   = "@tirexswa";
 
         artem.introduce();
     }
@@ -33,10 +36,12 @@ class Developer {
         System.out.print("Tech stack: ");
         for (String lang : languages) System.out.print(lang + " ");
         System.out.println("\nContact: " + email + " | Telegram: " + telegram);
+        System.out.println("🛠️ Building clean solutions with love for systems and architecture.");
+        System.out.println("🚀 Always learning. Always shipping.");
     }
 }
-
 ```
+
 
 <p align="center">
   <!-- Languages -->
