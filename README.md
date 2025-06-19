@@ -1,36 +1,41 @@
 ## Hello World 😎
 
 ```JAVA
-public class Developer {
+public class DeveloperProfile {
 
     public static void main(String[] args) {
-        Developer artem = new Developer("Artem")
-            .setLocation("🌍 Russia")
-            .setRole("🧠 Beginner Architect")
-            .setExperience("💼 10+ years")
-            .setLanguages("Java", "Python", "JavaScript", "PHP", "Lua")
-            .setSpecialties("Full Stack", "System Analysis", "VoIP", "Linux")
-            .setContact("📬 archibk32@yandex.ru", "Telegram: @tirexswa");
+        Developer artem = new Developer();
+        artem.name = "Artem";
+        artem.role = "🧠 Beginner Architect";
+        artem.experience = "💼 10+ years";
+        artem.location = "🌍 Russia";
+        artem.languages = new String[]{"Java", "Python", "JavaScript", "PHP", "Lua"};
+        artem.email = "📬 archibk32@yandex.ru";
+        artem.telegram = "@tirexswa";
 
-        artem.run();
-    }
-
-    public Developer(String name) {
-        System.out.println("🚀 Initializing Developer: " + name);
-    }
-
-    // setters returning 'this' for chaining
-    public Developer setLocation(String location) { /* ... */ return this; }
-    public Developer setRole(String role) { /* ... */ return this; }
-    public Developer setExperience(String exp) { /* ... */ return this; }
-    public Developer setLanguages(String... langs) { /* ... */ return this; }
-    public Developer setSpecialties(String... specialties) { /* ... */ return this; }
-    public Developer setContact(String... contacts) { /* ... */ return this; }
-
-    public void run() {
-        System.out.println("🧠 Developer online. Ready to create, automate, and innovate.");
+        artem.introduce();
     }
 }
+
+class Developer {
+    String name;
+    String role;
+    String experience;
+    String location;
+    String[] languages;
+    String email;
+    String telegram;
+
+    void introduce() {
+        System.out.println("👋 Hi, I'm " + name);
+        System.out.println(role + " based in " + location);
+        System.out.println("Experience: " + experience);
+        System.out.print("Tech stack: ");
+        for (String lang : languages) System.out.print(lang + " ");
+        System.out.println("\nContact: " + email + " | Telegram: " + telegram);
+    }
+}
+
 ```
 
 <p align="center">
