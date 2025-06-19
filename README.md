@@ -74,6 +74,7 @@ public class Developer {
   - System Analysis  
   - Full Stack Development  
   - Cisco Routing & Switching
+  - Software architecture
 
  
 ## 📬 Контакты
