@@ -14,6 +14,10 @@ public class Developer {
 }
 ```
 
+
+📈 GitHub Stats
+
+
 🛠️ Tech Stack
 <p align="center">
   <!-- Languages -->
