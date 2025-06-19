@@ -1,8 +1,5 @@
 ## Hello World 😎
 
-```JAVA
-## 🔗 Hello World 😎
-
 ```java
 public class DeveloperProfile {
 
