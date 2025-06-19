@@ -8,7 +8,7 @@ public class Developer {
         artem.setName("Artem");
         artem.setLocation("🌍 Russia");
         artem.setSpecialization("🧠 Full Stack | System Analyst");
-        artem.setExperience("💼 8+ years");
+        artem.setExperience("💼 10+ years");
         artem.setLanguages(List.of("Java", "Python", "JavaScript", "PHP", "Lua"));
         artem.setContact("📬 archibk32@yandex.ru");
 }
