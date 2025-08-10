@@ -23,12 +23,24 @@ print(f"Debug: TIME_RANGE = {TIME_RANGE}")
 print(f"Debug: LANG_COUNT = {LANG_COUNT}")
 
 if not API_KEY:
-    print("Missing WAKATIME_API_KEY", file=sys.stderr)
+    print("❌ ERROR: Missing WAKATIME_API_KEY", file=sys.stderr)
+    print("   Please add WAKATIME_API_KEY to your GitHub Secrets", file=sys.stderr)
     sys.exit(1)
+
+# Validate API key format (WakaTime API keys are typically 36 characters)
+if len(API_KEY) < 20:
+    print(f"⚠️  WARNING: API key seems too short ({len(API_KEY)} chars)")
+    print("   WakaTime API keys are typically 36 characters long")
+    print("   Make sure you're using the correct API key from https://wakatime.com/settings/api")
+
+# Check if API_BASE is correct
+if not API_BASE.startswith("https://api.wakatime.com"):
+    print(f"⚠️  WARNING: API_BASE_URL should be https://api.wakatime.com/api/v1, got: {API_BASE}")
 
 def http_get(url: str, headers: dict = None) -> dict:
     print(f"Debug: Making request to {url}")
-    print(f"Debug: Headers = {headers}")
+    print(f"Debug: Headers keys = {list(headers.keys()) if headers else 'None'}")
+    print(f"Debug: X-Api-Key length = {len(headers.get('X-Api-Key', '')) if headers else 0}")
     
     req = urllib.request.Request(url, headers=headers or {})
     try:
@@ -41,9 +53,37 @@ def http_get(url: str, headers: dict = None) -> dict:
     except urllib.error.HTTPError as e:
         print(f"Debug: HTTP Error {e.code}: {e.reason}")
         print(f"Debug: Response headers = {dict(e.headers)}")
+        
+        # Handle specific WakaTime API error codes
+        if e.code == 401:
+            print("❌ ERROR 401: Authentication failed!")
+            print("   - Check if your WAKATIME_API_KEY is correct")
+            print("   - Verify the API key is active at https://wakatime.com/settings/api")
+            print("   - Make sure you're using the correct API key (not secret key)")
+        elif e.code == 403:
+            print("❌ ERROR 403: Forbidden - API key may not have required permissions")
+        elif e.code == 429:
+            print("❌ ERROR 429: Rate limited - too many requests")
+        elif e.code == 500:
+            print("❌ ERROR 500: WakaTime server error - try again later")
+        
+        # Try to read error response
         if e.fp:
-            error_data = e.fp.read().decode("utf-8")
-            print(f"Debug: Error response data = {error_data}")
+            try:
+                error_data = e.fp.read().decode("utf-8")
+                print(f"Debug: Error response data = {error_data}")
+                # Parse WakaTime error response
+                try:
+                    error_json = json.loads(error_data)
+                    if 'errors' in error_json:
+                        print(f"Debug: WakaTime errors = {error_json['errors']}")
+                    elif 'error' in error_json:
+                        print(f"Debug: WakaTime error = {error_json['error']}")
+                except json.JSONDecodeError:
+                    pass
+            except Exception as read_error:
+                print(f"Debug: Could not read error response: {read_error}")
+        
         raise
     except Exception as e:
         print(f"Debug: Other error: {type(e).__name__}: {e}")
