@@ -1,13 +1,14 @@
 {
   "days": {
     "2025-08-10": {
-      "total_seconds": 3464,
+      "total_seconds": 4673,
       "languages": {
-        "Markdown": 1085.341,
+        "Markdown": 2294.448,
+        "YAML": 1506.186,
         "Python": 864.3,
         "Bash": 8.273
       }
     }
   },
-  "updated_at": "2025-08-10T12:55:42.200901Z"
+  "updated_at": "2025-08-10T13:03:29.566060Z"
 }
