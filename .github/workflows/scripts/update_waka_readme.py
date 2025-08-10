@@ -5,9 +5,10 @@ import urllib.request
 
 API_BASE = os.getenv("API_BASE_URL", "https://api.wakatime.com/api/v1")
 API_KEY  = os.getenv("WAKATIME_API_KEY")
-TIME_RANGE = os.getenv("TIME_RANGE", "all_time")  # all_time | last_7_days | last_30_days | last_year
+# --- config ---
+TIME_RANGE = os.getenv("TIME_RANGE", "today")  # today, last_7_days, last_30_days, all_time
 LANG_COUNT = int(os.getenv("LANG_COUNT", "10"))
-IGNORED = set(os.getenv("IGNORED_LANGUAGES", "").split())
+IGNORED = set(os.getenv("IGNORED_LANGUAGES", "YAML JSON TOML").split())
 
 README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
 
