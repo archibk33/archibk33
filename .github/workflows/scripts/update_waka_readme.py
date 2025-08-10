@@ -14,79 +14,112 @@ README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
 MARK_START = "<!-- WAKATIME:START -->"
 MARK_END   = "<!-- WAKATIME:END -->"
 
-# Debug information
+# ===== DETAILED DEBUG INFORMATION =====
+print("=" * 50)
+print("🔍 WAKATIME API DEBUG INFORMATION")
+print("=" * 50)
+
 print(f"Debug: API_BASE = {API_BASE}")
 print(f"Debug: API_KEY exists = {API_KEY is not None}")
 print(f"Debug: API_KEY length = {len(API_KEY) if API_KEY else 0}")
 print(f"Debug: API_KEY first 8 chars = {API_KEY[:8] if API_KEY else 'None'}...")
+print(f"Debug: API_KEY last 4 chars = ...{API_KEY[-4:] if API_KEY and len(API_KEY) >= 4 else 'None'}")
 print(f"Debug: TIME_RANGE = {TIME_RANGE}")
 print(f"Debug: LANG_COUNT = {LANG_COUNT}")
+print(f"Debug: IGNORED_LANGUAGES = {IGNORED}")
+print(f"Debug: TARGET_PATH = {README_PATH}")
+
+# Check environment variables
+print("\n🔍 Environment Variables Check:")
+for key, value in os.environ.items():
+    if 'WAKATIME' in key or 'API' in key:
+        if 'KEY' in key:
+            print(f"  {key} = {'*' * min(len(value), 8)}... (length: {len(value)})")
+        else:
+            print(f"  {key} = {value}")
 
 if not API_KEY:
-    print("❌ ERROR: Missing WAKATIME_API_KEY", file=sys.stderr)
-    print("   Please add WAKATIME_API_KEY to your GitHub Secrets", file=sys.stderr)
+    print("\n❌ ERROR: Missing WAKATIME_API_KEY")
+    print("   Please add WAKATIME_API_KEY to your GitHub Secrets")
     sys.exit(1)
 
 # Validate API key format (WakaTime API keys are typically 36 characters)
 if len(API_KEY) < 20:
-    print(f"⚠️  WARNING: API key seems too short ({len(API_KEY)} chars)")
+    print(f"\n⚠️  WARNING: API key seems too short ({len(API_KEY)} chars)")
     print("   WakaTime API keys are typically 36 characters long")
     print("   Make sure you're using the correct API key from https://wakatime.com/settings/api")
+elif len(API_KEY) > 50:
+    print(f"\n⚠️  WARNING: API key seems too long ({len(API_KEY)} chars)")
+    print("   WakaTime API keys are typically 36 characters long")
 
 # Check if API_BASE is correct
 if not API_BASE.startswith("https://api.wakatime.com"):
-    print(f"⚠️  WARNING: API_BASE_URL should be https://api.wakatime.com/api/v1, got: {API_BASE}")
+    print(f"\n⚠️  WARNING: API_BASE_URL should be https://api.wakatime.com/api/v1, got: {API_BASE}")
+
+print("\n" + "=" * 50)
 
 def http_get(url: str, headers: dict = None) -> dict:
-    print(f"Debug: Making request to {url}")
-    print(f"Debug: Headers keys = {list(headers.keys()) if headers else 'None'}")
-    print(f"Debug: X-Api-Key length = {len(headers.get('X-Api-Key', '')) if headers else 0}")
+    print(f"\n🌐 Making HTTP request:")
+    print(f"  URL: {url}")
+    print(f"  Headers keys: {list(headers.keys()) if headers else 'None'}")
+    print(f"  X-Api-Key length: {len(headers.get('X-Api-Key', '')) if headers else 0}")
+    print(f"  User-Agent: {headers.get('User-Agent', 'None') if headers else 'None'}")
     
     req = urllib.request.Request(url, headers=headers or {})
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
-            print(f"Debug: Response status = {resp.status}")
-            print(f"Debug: Response headers = {dict(resp.headers)}")
+            print(f"✅ Response received:")
+            print(f"  Status: {resp.status}")
+            print(f"  Headers: {dict(resp.headers)}")
             data = resp.read().decode("utf-8")
-            print(f"Debug: Response data length = {len(data)}")
+            print(f"  Data length: {len(data)} characters")
             return json.loads(data)
     except urllib.error.HTTPError as e:
-        print(f"Debug: HTTP Error {e.code}: {e.reason}")
-        print(f"Debug: Response headers = {dict(e.headers)}")
+        print(f"\n❌ HTTP Error {e.code}: {e.reason}")
+        print(f"  URL: {e.url}")
+        print(f"  Response headers: {dict(e.headers)}")
         
         # Handle specific WakaTime API error codes
         if e.code == 401:
-            print("❌ ERROR 401: Authentication failed!")
-            print("   - Check if your WAKATIME_API_KEY is correct")
-            print("   - Verify the API key is active at https://wakatime.com/settings/api")
-            print("   - Make sure you're using the correct API key (not secret key)")
+            print("\n🔐 ERROR 401: Authentication failed!")
+            print("   Possible causes:")
+            print("   - WAKATIME_API_KEY is incorrect or expired")
+            print("   - API key is not active at https://wakatime.com/settings/api")
+            print("   - You're using the wrong type of key (secret key instead of API key)")
+            print("   - API key has been revoked or deleted")
         elif e.code == 403:
-            print("❌ ERROR 403: Forbidden - API key may not have required permissions")
+            print("\n🚫 ERROR 403: Forbidden")
+            print("   - API key may not have required permissions")
+            print("   - Account may be suspended or restricted")
         elif e.code == 429:
-            print("❌ ERROR 429: Rate limited - too many requests")
+            print("\n⏱️  ERROR 429: Rate limited")
+            print("   - Too many requests, try again later")
         elif e.code == 500:
-            print("❌ ERROR 500: WakaTime server error - try again later")
+            print("\n🖥️  ERROR 500: WakaTime server error")
+            print("   - Service unavailable, try again later")
         
         # Try to read error response
         if e.fp:
             try:
                 error_data = e.fp.read().decode("utf-8")
-                print(f"Debug: Error response data = {error_data}")
+                print(f"\n📄 Error response data:")
+                print(f"  Raw: {error_data}")
+                
                 # Parse WakaTime error response
                 try:
                     error_json = json.loads(error_data)
                     if 'errors' in error_json:
-                        print(f"Debug: WakaTime errors = {error_json['errors']}")
+                        print(f"  Parsed errors: {error_json['errors']}")
                     elif 'error' in error_json:
-                        print(f"Debug: WakaTime error = {error_json['error']}")
+                        print(f"  Parsed error: {error_json['error']}")
                 except json.JSONDecodeError:
-                    pass
+                    print("  Could not parse as JSON")
             except Exception as read_error:
-                print(f"Debug: Could not read error response: {read_error}")
+                print(f"  Could not read error response: {read_error}")
         
         raise
     except Exception as e:
-        print(f"Debug: Other error: {type(e).__name__}: {e}")
+        print(f"\n💥 Other error: {type(e).__name__}: {e}")
         raise
 
 def human_dhms(total_seconds: int) -> str:
@@ -132,9 +165,11 @@ headers = {
     "User-Agent": "archibk33-waka-readme"
 }
 
-print(f"Debug: Full URL = {url}")
-print(f"Debug: Headers keys = {list(headers.keys())}")
-print(f"Debug: X-Api-Key length = {len(headers['X-Api-Key'])}")
+print(f"\n📊 Fetching WakaTime stats:")
+print(f"  Full URL: {url}")
+print(f"  Headers keys: {list(headers.keys())}")
+print(f"  X-Api-Key length: {len(headers['X-Api-Key'])}")
+print(f"  User-Agent: {headers['User-Agent']}")
 
 data = http_get(url, headers)
 
