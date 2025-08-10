@@ -110,5 +110,5 @@ class Developer {
 
 My coding time 😤
 
-<!-- WAKATIME:START -->
-<!-- WAKATIME:END -->
+<!--START_SECTION:waka-->
+<!--END_SECTION:waka-->
