@@ -16,7 +16,7 @@ jobs:
         with:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           ### meta
-          API_BASE_URL: https://wakatime.com/api # optional
+          API_BASE_URL: https://api.wakatime.com/api/v1 # optional
           ### content
           SHOW_TITLE: true # optional
           SECTION_NAME: waka # optional
