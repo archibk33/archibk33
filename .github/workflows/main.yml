@@ -15,33 +15,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install deps (stdlib only)
-        run: python -c "import sys; print('ok')"
-
       - name: Update README with WakaTime stats
-        env:
+        uses: athul/waka-readme@master
+        with:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           API_BASE_URL: https://api.wakatime.com/api/v1
-          TIME_RANGE: all_time
+          SHOW_TITLE: true
+          SECTION_NAME: "My coding time 😤"
+          BLOCKS: "time,language,editors,os,projects"
+          CODE_LANG: "rust"
+          TIME_RANGE: "all_time"
           LANG_COUNT: "10"
-          IGNORED_LANGUAGES: "YAML JSON TOML"
-          TARGET_PATH: README.md
-        run: |
-          python .github/scripts/update_waka_readme.py
-
-      - name: Commit & push if changed
-        run: |
-          if [[ -n "$(git status --porcelain)" ]]; then
-            git config user.name  "${{ github.actor }}"
-            git config user.email "${{ github.actor }}@users.noreply.github.com"
-            git add README.md
-            git commit -m "🔁 WakaReadme: refresh metrics"
-            git push
-          else
-            echo "Nothing to commit."
-          fi
+          SHOW_TIME: true
+          SHOW_TOTAL: true
+          SHOW_MASKED_TIME: false
+          STOP_AT_OTHER: true
+          IGNORED_LANGUAGES: "YAML,JSON,TOML"
+          COMMIT_MESSAGE: "🔁 WakaReadme: refresh metrics"
+          TARGET_BRANCH: "main"
+          TARGET_PATH: "README.md"
