@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# FORCE UPDATE: Script updated to use 'today' as default time range
+# This comment forces GitHub Actions to re-evaluate the script
 import os, sys, json, base64, math, datetime as dt, re
 from pathlib import Path
 import urllib.request

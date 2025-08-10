@@ -1,4 +1,6 @@
-name: Waka Readme - Custom Script v2
+# FORCE UPDATE: Workflow configuration updated
+# This comment forces GitHub Actions to re-evaluate the workflow
+name: Waka Readme - Custom Script v3
 
 on:
   workflow_dispatch:
