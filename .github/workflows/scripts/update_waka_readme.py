@@ -12,7 +12,7 @@ API_KEY  = os.getenv("WAKATIME_API_KEY")
 TIME_RANGE = os.getenv("TIME_RANGE", "today")  # today, last_7_days, last_30_days, all_time
 # LANG_COUNT: 0 means show all languages
 LANG_COUNT = int(os.getenv("LANG_COUNT", "0"))
-IGNORED = set(os.getenv("IGNORED_LANGUAGES", "YAML JSON TOML").split())
+IGNORED = set(filter(None, os.getenv("IGNORED_LANGUAGES", "").split()))
 
 README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
 STORE_PATH = Path(os.getenv("STORE_PATH", ".github/waka_store.json"))
@@ -268,7 +268,8 @@ def line_for_lang(l: dict) -> str:
     pct  = float(l.get("percent", 0))
     dur  = l.get("text") or human_dhms(l.get("total_seconds", 0))
     emoji = LANG_EMOJI.get(name, "💻")
-    return f"{emoji} **{name}**  {dur}  `{bar(pct)}`  {pct:05.2f} %"
+    # bullet list to гарантировать переносы строк в GitHub Markdown
+    return f"- {emoji} **{name}**  {dur}  `{bar(pct)}`  {pct:05.2f} %"
 
 # header date text
 def nice_date(s):
