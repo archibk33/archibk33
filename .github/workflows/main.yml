@@ -45,3 +45,5 @@ jobs:
           else
             echo "Nothing to commit."
           fi
+
+# Force GitHub Actions to use this workflow configuration
