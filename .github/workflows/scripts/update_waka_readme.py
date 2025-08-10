@@ -14,14 +14,40 @@ README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
 MARK_START = "<!-- WAKATIME:START -->"
 MARK_END   = "<!-- WAKATIME:END -->"
 
+# Debug information
+print(f"Debug: API_BASE = {API_BASE}")
+print(f"Debug: API_KEY exists = {API_KEY is not None}")
+print(f"Debug: API_KEY length = {len(API_KEY) if API_KEY else 0}")
+print(f"Debug: API_KEY first 8 chars = {API_KEY[:8] if API_KEY else 'None'}...")
+print(f"Debug: TIME_RANGE = {TIME_RANGE}")
+print(f"Debug: LANG_COUNT = {LANG_COUNT}")
+
 if not API_KEY:
     print("Missing WAKATIME_API_KEY", file=sys.stderr)
     sys.exit(1)
 
 def http_get(url: str, headers: dict = None) -> dict:
+    print(f"Debug: Making request to {url}")
+    print(f"Debug: Headers = {headers}")
+    
     req = urllib.request.Request(url, headers=headers or {})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            print(f"Debug: Response status = {resp.status}")
+            print(f"Debug: Response headers = {dict(resp.headers)}")
+            data = resp.read().decode("utf-8")
+            print(f"Debug: Response data length = {len(data)}")
+            return json.loads(data)
+    except urllib.error.HTTPError as e:
+        print(f"Debug: HTTP Error {e.code}: {e.reason}")
+        print(f"Debug: Response headers = {dict(e.headers)}")
+        if e.fp:
+            error_data = e.fp.read().decode("utf-8")
+            print(f"Debug: Error response data = {error_data}")
+        raise
+    except Exception as e:
+        print(f"Debug: Other error: {type(e).__name__}: {e}")
+        raise
 
 def human_dhms(total_seconds: int) -> str:
     m, s = divmod(int(total_seconds), 60)
@@ -65,6 +91,11 @@ headers = {
     "X-Api-Key": API_KEY,
     "User-Agent": "archibk33-waka-readme"
 }
+
+print(f"Debug: Full URL = {url}")
+print(f"Debug: Headers keys = {list(headers.keys())}")
+print(f"Debug: X-Api-Key length = {len(headers['X-Api-Key'])}")
+
 data = http_get(url, headers)
 
 stats = data.get("data", {})
