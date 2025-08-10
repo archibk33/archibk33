@@ -23,6 +23,13 @@ jobs:
       - name: Install deps (stdlib only)
         run: python -c "import sys; print('ok')"
 
+      - name: Debug environment variables
+        run: |
+          echo "WAKATIME_API_KEY exists: ${{ secrets.WAKATIME_API_KEY != '' }}"
+          echo "API_BASE_URL: ${{ secrets.API_BASE_URL || 'https://api.wakatime.com/api/v1' }}"
+          echo "TIME_RANGE: all_time"
+          echo "LANG_COUNT: 10"
+
       - name: Update README with WakaTime stats
         env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
@@ -32,6 +39,7 @@ jobs:
           IGNORED_LANGUAGES: "YAML JSON TOML"
           TARGET_PATH: README.md
         run: |
+          echo "Starting WakaTime update script..."
           python .github/workflows/scripts/update_waka_readme.py
 
       - name: Commit & push if changed
