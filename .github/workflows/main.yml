@@ -1,4 +1,4 @@
-name: Waka Readme
+name: Waka Readme - Custom Script v2
 
 on:
   workflow_dispatch:
@@ -25,10 +25,16 @@ jobs:
 
       - name: Debug environment variables
         run: |
+          echo "=========================================="
+          echo "🔍 WORKFLOW DEBUG INFORMATION"
+          echo "=========================================="
           echo "WAKATIME_API_KEY exists: ${{ secrets.WAKATIME_API_KEY != '' }}"
+          echo "WAKATIME_API_KEY length: ${{ secrets.WAKATIME_API_KEY != '' && '***' || '0' }}"
           echo "API_BASE_URL: ${{ secrets.API_BASE_URL || 'https://api.wakatime.com/api/v1' }}"
           echo "TIME_RANGE: all_time"
           echo "LANG_COUNT: 10"
+          echo "Script path: .github/workflows/scripts/update_waka_readme.py"
+          echo "=========================================="
 
       - name: Update README with WakaTime stats
         env:
@@ -54,4 +60,8 @@ jobs:
             echo "Nothing to commit."
           fi
 
-# Force GitHub Actions to use this workflow configuration
+# ==================================================
+# FORCE UPDATE: This comment forces GitHub Actions to re-read workflow
+# ==================================================
+# Last updated: $(date) - Custom Python script for WakaTime stats
+# ==================================================
