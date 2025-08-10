@@ -1,6 +1,6 @@
 # FORCE UPDATE: Workflow configuration updated
 # This comment forces GitHub Actions to re-evaluate the workflow
-name: Waka Readme - Custom Script v3
+name: Waka Readme - Custom Script v4
 
 on:
   workflow_dispatch:
@@ -38,7 +38,7 @@ jobs:
           echo "Script path: .github/workflows/scripts/update_waka_readme.py"
           echo "=========================================="
 
-      - name: Update README with WakaTime stats
+      - name: Update README with WakaTime stats (accumulate)
         env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
           API_BASE_URL: https://api.wakatime.com/api/v1
@@ -49,7 +49,7 @@ jobs:
           STORE_PATH: .github/waka_store.json
         run: |
           echo "Starting WakaTime update script..."
-          python .github/workflows/scripts/update_waka_readme.py
+          python .github/workflows/scripts/update_waka_readme_accumulate.py
 
       - name: Commit & push if changed
         run: |
