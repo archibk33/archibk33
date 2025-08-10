@@ -8,11 +8,14 @@ import urllib.request
 API_BASE = os.getenv("API_BASE_URL", "https://api.wakatime.com/api/v1")
 API_KEY  = os.getenv("WAKATIME_API_KEY")
 # --- config ---
+# TIME_RANGE kept for backwards compatibility but not required for accumulation mode
 TIME_RANGE = os.getenv("TIME_RANGE", "today")  # today, last_7_days, last_30_days, all_time
-LANG_COUNT = int(os.getenv("LANG_COUNT", "10"))
+# LANG_COUNT: 0 means show all languages
+LANG_COUNT = int(os.getenv("LANG_COUNT", "0"))
 IGNORED = set(os.getenv("IGNORED_LANGUAGES", "YAML JSON TOML").split())
 
 README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
+STORE_PATH = Path(os.getenv("STORE_PATH", ".github/waka_store.json"))
 
 MARK_START = "<!-- WAKATIME:START -->"
 MARK_END   = "<!-- WAKATIME:END -->"
@@ -31,6 +34,7 @@ print(f"Debug: TIME_RANGE = {TIME_RANGE}")
 print(f"Debug: LANG_COUNT = {LANG_COUNT}")
 print(f"Debug: IGNORED_LANGUAGES = {IGNORED}")
 print(f"Debug: TARGET_PATH = {README_PATH}")
+print(f"Debug: STORE_PATH = {STORE_PATH}")
 
 # Check environment variables
 print("\n🔍 Environment Variables Check:")
@@ -159,58 +163,100 @@ LANG_EMOJI = {
     "Properties": "⚙️",
 }
 
-# --- fetch stats ---
-# https://wakatime.com/developers#stats
-# /users/current/stats/{range}
-url = f"{API_BASE}/users/current/stats/{TIME_RANGE}?is_including_today=true&api_key={API_KEY}"
-headers = {
-    "User-Agent": "archibk33-waka-readme"
+#############################
+# Accumulation mode (free tier friendly)
+# - fetch today's summary
+# - store per-day language totals in repo
+# - render README from accumulated totals across all stored days
+#############################
+
+def fetch_today_summary() -> tuple[str, int, list[dict]]:
+    # Allow overriding date for debugging
+    date_str = os.getenv("SUMMARY_DATE") or dt.date.today().isoformat()
+    url = (
+        f"{API_BASE}/users/current/summaries?start={date_str}&end={date_str}"
+        f"&is_including_today=true&range=1_day&api_key={API_KEY}"
+    )
+    headers = {"User-Agent": "archibk33-waka-readme"}
+    print("\n📊 Fetching WakaTime daily summary:")
+    print(f"  Date: {date_str}")
+    print(f"  URL: {url}")
+    data = http_get(url, headers)
+    if not isinstance(data, dict) or not data.get("data"):
+        print("❌ No summary data received from API")
+        sys.exit(1)
+    day = (data.get("data") or [{}])[0]
+    # prefer date from API to avoid TZ drift
+    range_info = day.get("range") or {}
+    api_date = (
+        (range_info.get("date") if isinstance(range_info, dict) else None)
+        or date_str
+    )
+    grand = day.get("grand_total", {}) or {}
+    total_seconds = int(grand.get("total_seconds", 0))
+    languages = day.get("languages") or []
+    return api_date, total_seconds, languages
+
+
+def load_store() -> dict:
+    if STORE_PATH.exists():
+        try:
+            return json.loads(STORE_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            return {"days": {}}
+    return {"days": {}}
+
+
+def save_store(store: dict) -> None:
+    STORE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STORE_PATH.write_text(json.dumps(store, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def compute_aggregate(store: dict) -> tuple[int, dict]:
+    languages_totals: dict[str, float] = {}
+    total_seconds = 0
+    for day_date, day in store.get("days", {}).items():
+        total_seconds += int(day.get("total_seconds", 0))
+        for lang, seconds in (day.get("languages", {}) or {}).items():
+            languages_totals[lang] = languages_totals.get(lang, 0) + float(seconds)
+    return total_seconds, languages_totals
+
+
+# 1) Fetch today's summary
+today_date, today_total_seconds, today_langs = fetch_today_summary()
+
+# 2) Load store and upsert today's entry (replace same day)
+store = load_store()
+store.setdefault("days", {})
+store["days"][today_date] = {
+    "total_seconds": int(today_total_seconds),
+    "languages": {
+        l.get("name", "Other"): float(l.get("total_seconds", 0.0)) for l in (today_langs or [])
+        if l.get("name") and l.get("name") not in IGNORED
+    }
 }
+store["updated_at"] = dt.datetime.utcnow().isoformat() + "Z"
+save_store(store)
 
-print(f"\n📊 Fetching WakaTime stats:")
-print(f"  Full URL: {url}")
-print(f"  Headers keys: {list(headers.keys())}")
-print(f"  API Key length: {len(API_KEY)}")
-print(f"  User-Agent: {headers['User-Agent']}")
+# 3) Compute aggregate from all stored days
+agg_total_seconds, agg_lang_totals = compute_aggregate(store)
 
-data = http_get(url, headers)
-
-# Debug: print the structure of the response
-print(f"\n🔍 API Response Structure:")
-print(f"  Type of 'data': {type(data)}")
-print(f"  Keys in 'data': {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
-print(f"  Type of 'data.data': {type(data.get('data')) if isinstance(data, dict) else 'N/A'}")
-
-# Extract stats from the response
-stats = data.get("data", {}) if isinstance(data, dict) else {}
-
-print(f"  Type of 'stats': {type(stats)}")
-print(f"  Keys in 'stats': {list(stats.keys()) if isinstance(stats, dict) else 'Not a dict'}")
-
-if not stats:
-    print("❌ No stats data received from API")
-    sys.exit(1)
-
-grand = stats.get("grand_total", {}) or {}
-total_text = grand.get("text") or human_dhms(grand.get("total_seconds", 0))
-total_secs = int(grand.get("total_seconds", 0))
-
-# Fix range extraction - handle both object and string formats
-range_obj = stats.get("range", {})
-if isinstance(range_obj, dict):
-    range_start = range_obj.get("start")
-    range_end = range_obj.get("end")
-else:
-    range_start = stats.get("start")
-    range_end = stats.get("end")
-
+# Convert to list of dicts like Stats API for rendering
+total_secs = int(agg_total_seconds)
+total_text = human_dhms(total_secs)
 langs = [
-    l for l in (stats.get("languages") or [])
-    if l.get("name") not in IGNORED
+    {"name": name, "total_seconds": secs, "percent": (secs / total_secs * 100.0 if total_secs else 0), "text": human_dhms(secs)}
+    for name, secs in agg_lang_totals.items() if name not in IGNORED
 ]
-# sort & cut
+# sort & maybe cut
 langs.sort(key=lambda x: float(x.get("total_seconds", 0)), reverse=True)
-langs = langs[:LANG_COUNT]
+if LANG_COUNT and LANG_COUNT > 0:
+    langs = langs[:LANG_COUNT]
+
+# derive date range from store
+all_dates = sorted(store.get("days", {}).keys())
+range_start = all_dates[0] if all_dates else today_date
+range_end = all_dates[-1] if all_dates else today_date
 
 def bar(pct: float, width: int = 26) -> str:
     # draw text bar using '▰' and '▱'
