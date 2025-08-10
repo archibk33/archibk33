@@ -110,7 +110,7 @@ class Developer {
 
 My coding time 😤
 
-<!--START_SECTION:waka-->
+<!-- WAKATIME:START -->
 
 ```rust
 From: 18 November 2023 - To: 09 August 2025
@@ -128,4 +128,4 @@ Java Properties   18 mins         -------------------------   00.37 %
 PlantUML file     18 mins         -------------------------   00.36 %
 ```
 
-<!--END_SECTION:waka-->
+<!-- WAKATIME:END -->
