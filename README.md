@@ -110,22 +110,5 @@ class Developer {
 
 My coding time 😤
 
-<!--START_SECTION:waka-->
-
-```rust
-From: 18 November 2023 - To: 09 August 2025
-
-Total Time: 85 hrs 53 mins
-
-Java              40 hrs 18 mins  >>>>>>>>>>>>-------------   46.92 %
-JavaScript        21 hrs 41 mins  >>>>>>-------------------   25.26 %
-CSS               13 hrs 44 mins  >>>>---------------------   16.01 %
-HTML              5 hrs 52 mins   >>-----------------------   06.85 %
-HTTP Request      40 mins         -------------------------   00.79 %
-Markdown          28 mins         -------------------------   00.55 %
-TypeScript        25 mins         -------------------------   00.49 %
-Java Properties   18 mins         -------------------------   00.37 %
-PlantUML file     18 mins         -------------------------   00.36 %
-```
-
-<!--END_SECTION:waka-->
+<!-- WAKATIME:START -->
+<!-- WAKATIME:END -->

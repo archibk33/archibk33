@@ -1,40 +1,47 @@
 name: Waka Readme
 
 on:
-  # for manual workflow trigger
   workflow_dispatch:
   schedule:
-    # runs at 12 AM UTC (5:30 AM IST)
-    - cron: "0 0 * * *"
+    - cron: "5 0 * * *"   # каждый день 00:05 UTC
+
+permissions:
+  contents: write
 
 jobs:
   update-readme:
-    name: WakaReadme DevMetrics
     runs-on: ubuntu-latest
     steps:
-      - uses: athul/waka-readme@master # this action name
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
+          python-version: "3.11"
+
+      - name: Install deps (stdlib only)
+        run: python -c "import sys; print('ok')"
+
+      - name: Update README with WakaTime stats
+        env:
           WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
-          ### meta
-          API_BASE_URL: https://api.wakatime.com/api/v1 # optional
-          ### content
-          SHOW_TITLE: true # optional
-          SECTION_NAME: waka # optional
-          BLOCKS: -> # optional
-          CODE_LANG: rust # optional
-          TIME_RANGE: all_time # optional
-          LANG_COUNT: 10 # optional
-          SHOW_TIME: true # optional
-          SHOW_TOTAL: true # optional
-          SHOW_MASKED_TIME: false # optional
-          STOP_AT_OTHER: true # optional
-          IGNORED_LANGUAGES: YAML JSON TOML # optional
-          ### commit
-          COMMIT_MESSAGE: Updated waka-readme graph with new metrics # optional
-          TARGET_BRANCH: main # optional
-          TARGET_PATH: README.md # optional
-          COMMITTER_NAME: GitHubActionBot # optional
-          COMMITTER_EMAIL: action-bot@github.com # optional
-          AUTHOR_NAME: Artem # optional
-          AUTHOR_EMAIL: arcchibk32@yandex.ru # optional
-          # you can populate email-id with secretes instead
+          API_BASE_URL: https://api.wakatime.com/api/v1
+          TIME_RANGE: all_time
+          LANG_COUNT: "10"
+          IGNORED_LANGUAGES: "YAML JSON TOML"
+          TARGET_PATH: README.md
+        run: |
+          python .github/scripts/update_waka_readme.py
+
+      - name: Commit & push if changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name  "${{ github.actor }}"
+            git config user.email "${{ github.actor }}@users.noreply.github.com"
+            git add README.md
+            git commit -m "🔁 WakaReadme: refresh metrics"
+            git push
+          else
+            echo "Nothing to commit."
+          fi
