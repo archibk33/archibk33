@@ -159,26 +159,47 @@ LANG_EMOJI = {
 # --- fetch stats ---
 # https://wakatime.com/developers#stats
 # /users/current/stats/{range}
-url = f"{API_BASE}/users/current/stats/{TIME_RANGE}?is_including_today=true"
+url = f"{API_BASE}/users/current/stats/{TIME_RANGE}?is_including_today=true&api_key={API_KEY}"
 headers = {
-    "X-Api-Key": API_KEY,
     "User-Agent": "archibk33-waka-readme"
 }
 
 print(f"\n📊 Fetching WakaTime stats:")
 print(f"  Full URL: {url}")
 print(f"  Headers keys: {list(headers.keys())}")
-print(f"  X-Api-Key length: {len(headers['X-Api-Key'])}")
+print(f"  API Key length: {len(API_KEY)}")
 print(f"  User-Agent: {headers['User-Agent']}")
 
 data = http_get(url, headers)
 
-stats = data.get("data", {})
+# Debug: print the structure of the response
+print(f"\n🔍 API Response Structure:")
+print(f"  Type of 'data': {type(data)}")
+print(f"  Keys in 'data': {list(data.keys()) if isinstance(data, dict) else 'Not a dict'}")
+print(f"  Type of 'data.data': {type(data.get('data')) if isinstance(data, dict) else 'N/A'}")
+
+# Extract stats from the response
+stats = data.get("data", {}) if isinstance(data, dict) else {}
+
+print(f"  Type of 'stats': {type(stats)}")
+print(f"  Keys in 'stats': {list(stats.keys()) if isinstance(stats, dict) else 'Not a dict'}")
+
+if not stats:
+    print("❌ No stats data received from API")
+    sys.exit(1)
+
 grand = stats.get("grand_total", {}) or {}
 total_text = grand.get("text") or human_dhms(grand.get("total_seconds", 0))
 total_secs = int(grand.get("total_seconds", 0))
-range_start = stats.get("range", {}).get("start") or stats.get("start")
-range_end   = stats.get("range", {}).get("end")   or stats.get("end")
+
+# Fix range extraction - handle both object and string formats
+range_obj = stats.get("range", {})
+if isinstance(range_obj, dict):
+    range_start = range_obj.get("start")
+    range_end = range_obj.get("end")
+else:
+    range_start = stats.get("start")
+    range_end = stats.get("end")
 
 langs = [
     l for l in (stats.get("languages") or [])
