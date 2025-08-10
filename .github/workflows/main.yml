@@ -44,7 +44,7 @@ jobs:
           API_BASE_URL: https://api.wakatime.com/api/v1
           TIME_RANGE: today
           LANG_COUNT: "0"  # 0 = show all languages
-          IGNORED_LANGUAGES: "YAML JSON TOML"
+          IGNORED_LANGUAGES: ""
           TARGET_PATH: README.md
           STORE_PATH: .github/waka_store.json
         run: |
