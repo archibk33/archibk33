@@ -1,0 +1,48 @@
+name: Waka Readme - Accumulate v5
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "5 0 * * *"  # ежедневно 00:05 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Update README with WakaTime stats (accumulate)
+        env:
+          WAKATIME_API_KEY: ${{ secrets.WAKATIME_API_KEY }}
+          API_BASE_URL: https://api.wakatime.com/api/v1
+          TIME_RANGE: today
+          LANG_COUNT: "0"  # 0 = показать все языки
+          IGNORED_LANGUAGES: "YAML JSON TOML"
+          TARGET_PATH: README.md
+          STORE_PATH: .github/waka_store.json
+        run: |
+          echo "Starting WakaTime accumulation script..."
+          python .github/workflows/scripts/update_waka_readme.py
+
+      - name: Commit & push if changed
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name  "${{ github.actor }}"
+            git config user.email "${{ github.actor }}@users.noreply.github.com"
+            git add README.md .github/waka_store.json || true
+            git commit -m "🔁 WakaReadme: accumulated metrics update"
+            git push
+          else
+            echo "Nothing to commit."
+          fi
+
+
