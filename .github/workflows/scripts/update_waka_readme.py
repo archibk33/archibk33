@@ -16,6 +16,7 @@ IGNORED = set(filter(None, os.getenv("IGNORED_LANGUAGES", "").split()))
 
 README_PATH = Path(os.getenv("TARGET_PATH", "README.md"))
 STORE_PATH = Path(os.getenv("STORE_PATH", ".github/waka_store.json"))
+BACKFILL_DAYS = int(os.getenv("BACKFILL_DAYS", "0"))  # 0 = выключено
 
 MARK_START = "<!-- WAKATIME:START -->"
 MARK_END   = "<!-- WAKATIME:END -->"
@@ -222,6 +223,35 @@ def fetch_today_summary() -> tuple[str, int, list[dict]]:
     return api_date, total_seconds, languages
 
 
+def fetch_range_summaries(start_date: dt.date, end_date: dt.date) -> dict:
+    """Fetch summaries for a date range [start_date, end_date].
+
+    Returns mapping: date_iso -> { 'total_seconds': int, 'languages': list[dict] }
+    """
+    url = (
+        f"{API_BASE}/users/current/summaries?start={start_date.isoformat()}&end={end_date.isoformat()}&api_key={API_KEY}"
+    )
+    headers = {"User-Agent": "archibk33-waka-readme"}
+    print("\n📊 Fetching WakaTime range summary:")
+    print(f"  Start: {start_date.isoformat()}  End: {end_date.isoformat()}")
+    print(f"  URL: {url}")
+    data = http_get(url, headers)
+    result: dict[str, dict] = {}
+    for day in (data.get("data") or []):
+        range_info = day.get("range") or {}
+        date_iso = (range_info.get("date") if isinstance(range_info, dict) else None)
+        if not date_iso:
+            continue
+        grand = day.get("grand_total", {}) or {}
+        total_seconds = int(grand.get("total_seconds", 0))
+        languages = day.get("languages") or []
+        result[date_iso] = {
+            "total_seconds": total_seconds,
+            "languages": languages,
+        }
+    return result
+
+
 def load_store() -> dict:
     if STORE_PATH.exists():
         try:
@@ -246,19 +276,38 @@ def compute_aggregate(store: dict) -> tuple[int, dict]:
     return total_seconds, languages_totals
 
 
-# 1) Fetch today's summary
-today_date, today_total_seconds, today_langs = fetch_today_summary()
-
-# 2) Load store and upsert today's entry (replace same day)
 store = load_store()
 store.setdefault("days", {})
-store["days"][today_date] = {
-    "total_seconds": int(today_total_seconds),
-    "languages": {
-        l.get("name", "Other"): float(l.get("total_seconds", 0.0)) for l in (today_langs or [])
-        if l.get("name") and l.get("name") not in IGNORED
+
+if BACKFILL_DAYS and BACKFILL_DAYS > 0:
+    # Backfill last N days up to the chosen end date
+    end_iso = determine_summary_date()
+    try:
+        end_dt = dt.date.fromisoformat(end_iso)
+    except Exception:
+        end_dt = dt.date.today()
+    start_dt = end_dt - dt.timedelta(days=BACKFILL_DAYS - 1)
+    range_data = fetch_range_summaries(start_dt, end_dt)
+    for date_iso, payload in range_data.items():
+        lang_map = {}
+        for l in (payload.get("languages") or []):
+            if l.get("name") and l.get("name") not in IGNORED:
+                lang_map[l.get("name")] = float(l.get("total_seconds", 0.0))
+        store["days"][date_iso] = {
+            "total_seconds": int(payload.get("total_seconds", 0)),
+            "languages": lang_map,
+        }
+else:
+    # Single day update (yesterday for schedules/early UTC)
+    today_date, today_total_seconds, today_langs = fetch_today_summary()
+    store["days"][today_date] = {
+        "total_seconds": int(today_total_seconds),
+        "languages": {
+            l.get("name", "Other"): float(l.get("total_seconds", 0.0)) for l in (today_langs or [])
+            if l.get("name") and l.get("name") not in IGNORED
+        }
     }
-}
+
 store["updated_at"] = dt.datetime.utcnow().isoformat() + "Z"
 save_store(store)
 

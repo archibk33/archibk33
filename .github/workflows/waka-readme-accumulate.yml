@@ -6,6 +6,10 @@ on:
       summary_date:
         description: "Override date to fetch (YYYY-MM-DD). Leave empty for auto."
         required: false
+      backfill_days:
+        description: "Backfill last N days (0 = off)."
+        required: false
+        default: "0"
   schedule:
     - cron: "5 0 * * *"  # ежедневно 00:05 UTC
 
@@ -34,6 +38,7 @@ jobs:
           TARGET_PATH: README.md
           STORE_PATH: .github/waka_store.json
           SUMMARY_DATE: ${{ inputs.summary_date }}
+          BACKFILL_DAYS: ${{ inputs.backfill_days }}
         run: |
           echo "Starting WakaTime accumulation script..."
           python .github/workflows/scripts/update_waka_readme.py
