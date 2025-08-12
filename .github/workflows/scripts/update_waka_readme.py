@@ -279,14 +279,24 @@ def compute_aggregate(store: dict) -> tuple[int, dict]:
 store = load_store()
 store.setdefault("days", {})
 
-if BACKFILL_DAYS and BACKFILL_DAYS > 0:
+# Auto-backfill heuristic: если явно не задан BACKFILL_DAYS, но в сторе мало дней,
+# подтянем последние 7 дней, чтобы совпасть с дашбордом "Last 7 Days".
+auto_backfill_days = 0
+if not BACKFILL_DAYS:
+    existing_days = list(store.get("days", {}).keys())
+    if len(existing_days) < 3:  # практически пусто – сделаем авто-филл
+        auto_backfill_days = 7
+
+effective_backfill = BACKFILL_DAYS or auto_backfill_days
+
+if effective_backfill and effective_backfill > 0:
     # Backfill last N days up to the chosen end date
     end_iso = determine_summary_date()
     try:
         end_dt = dt.date.fromisoformat(end_iso)
     except Exception:
         end_dt = dt.date.today()
-    start_dt = end_dt - dt.timedelta(days=BACKFILL_DAYS - 1)
+    start_dt = end_dt - dt.timedelta(days=effective_backfill - 1)
     range_data = fetch_range_summaries(start_dt, end_dt)
     for date_iso, payload in range_data.items():
         lang_map = {}
