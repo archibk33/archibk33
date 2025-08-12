@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # нужно для pull --rebase и корректного push
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,13 +45,15 @@ jobs:
           echo "Starting WakaTime accumulation script..."
           python .github/workflows/scripts/update_waka_readme.py
 
-      - name: Commit & push if changed
+      - name: Commit & push if changed (with rebase)
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name  "${{ github.actor }}"
             git config user.email "${{ github.actor }}@users.noreply.github.com"
             git add README.md .github/waka_store.json || true
-            git commit -m "🔁 WakaReadme: accumulated metrics update"
+            git commit -m "🔁 WakaReadme: accumulated metrics update" || true
+            # Подтягиваем удалённые изменения и применяем наш коммит поверх
+            git pull --rebase origin "${GITHUB_REF_NAME:-main}" || git pull --rebase origin main
             git push
           else
             echo "Nothing to commit."
