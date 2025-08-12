@@ -11,7 +11,7 @@ on:
         required: false
         default: "0"
   schedule:
-    - cron: "5 0 * * *"  # ежедневно 00:05 UTC
+    - cron: "0 0 * * *"  # ежедневно 00:00 UTC
 
 permissions:
   contents: write
@@ -43,7 +43,9 @@ jobs:
           TARGET_PATH: README.md
           STORE_PATH: .github/waka_store.json
           SUMMARY_DATE: ${{ inputs.summary_date }}
-          BACKFILL_DAYS: ${{ inputs.backfill_days }}
+          # Для расписания всегда делаем backfill последних 7 дней.
+          # Для ручного запуска используем введённое значение.
+          BACKFILL_DAYS: ${{ github.event_name == 'schedule' && '7' || inputs.backfill_days }}
         run: |
           echo "Starting WakaTime accumulation script..."
           python .github/workflows/scripts/update_waka_readme.py
