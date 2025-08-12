@@ -19,6 +19,9 @@ permissions:
 jobs:
   update-readme:
     runs-on: ubuntu-latest
+    concurrency:
+      group: wakatime-readme-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,11 +48,11 @@ jobs:
           echo "Starting WakaTime accumulation script..."
           python .github/workflows/scripts/update_waka_readme.py
 
-      - name: Commit & push if changed (safe rebase)
+      - name: Commit & push if changed (retry with rebase)
         run: |
+          set -euo pipefail
           git config user.name  "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
-          # Всегда убедимся, что локальная ветка синхронизирована перед коммитом
           BRANCH="${GITHUB_REF_NAME:-main}"
           git fetch origin "$BRANCH"
           git checkout "$BRANCH" || git checkout -B "$BRANCH"
@@ -58,7 +61,28 @@ jobs:
           if [[ -n "$(git status --porcelain)" ]]; then
             git add README.md .github/waka_store.json || true
             git commit -m "🔁 WakaReadme: accumulated metrics update" || true
-            git push origin HEAD:"$BRANCH" --force-with-lease
+
+            # Пытаемся пушить с несколькими повторами, чтобы пережить гонки
+            n=0
+            until git push origin HEAD:"$BRANCH" --force-with-lease; do
+              n=$((n+1))
+              if [[ $n -ge 5 ]]; then
+                echo "Push failed after $n attempts." >&2
+                exit 1
+              fi
+              echo "Push rejected, retry $n: fetching/rebasing and retrying..."
+              git fetch origin "$BRANCH"
+              if ! git pull --rebase origin "$BRANCH"; then
+                echo "Rebase failed, resetting to remote and retrying commit..."
+                git rebase --abort || true
+                git reset --hard "origin/$BRANCH"
+                # Перегенерируем блок: запускаем скрипт повторно
+                python .github/workflows/scripts/update_waka_readme.py || true
+                git add README.md .github/waka_store.json || true
+                git commit -m "🔁 WakaReadme: re-generated after rebase" || true
+              fi
+              sleep $(( (RANDOM % 5) + 2 ))
+            done
           else
             echo "Nothing to commit."
           fi
