@@ -165,14 +165,38 @@ LANG_EMOJI = {
 
 #############################
 # Accumulation mode (free tier friendly)
-# - fetch today's summary
+# - fetch daily summary (yesterday on schedules/early UTC to avoid partial days)
 # - store per-day language totals in repo
 # - render README from accumulated totals across all stored days
 #############################
 
+def determine_summary_date() -> str:
+    """Pick which date to fetch from WakaTime.
+
+    Logic:
+    - If `SUMMARY_DATE` is provided, use it (debug/manual override).
+    - If running on a scheduled workflow (`GITHUB_EVENT_NAME == 'schedule'`) OR
+      if current time is in early UTC hours (< 06:00), use yesterday to ensure
+      the previous day is fully processed by WakaTime.
+    - Otherwise, use today.
+    """
+    override_date = os.getenv("SUMMARY_DATE")
+    if override_date:
+        return override_date
+
+    event_name = os.getenv("GITHUB_EVENT_NAME", "")
+    try:
+        current_hour_utc = dt.datetime.utcnow().hour
+    except Exception:
+        current_hour_utc = 12
+
+    use_yesterday = event_name == "schedule" or current_hour_utc < 6
+    target_date = dt.date.today() - dt.timedelta(days=1 if use_yesterday else 0)
+    return target_date.isoformat()
+
 def fetch_today_summary() -> tuple[str, int, list[dict]]:
-    # Allow overriding date for debugging
-    date_str = os.getenv("SUMMARY_DATE") or dt.date.today().isoformat()
+    # Decide which date to fetch (yesterday for schedules/early UTC)
+    date_str = determine_summary_date()
     url = (
         f"{API_BASE}/users/current/summaries?start={date_str}&end={date_str}"
         f"&is_including_today=true&range=1_day&api_key={API_KEY}"

@@ -2,6 +2,10 @@ name: Waka Readme - Accumulate v5
 
 on:
   workflow_dispatch:
+    inputs:
+      summary_date:
+        description: "Override date to fetch (YYYY-MM-DD). Leave empty for auto."
+        required: false
   schedule:
     - cron: "5 0 * * *"  # ежедневно 00:05 UTC
 
@@ -29,6 +33,7 @@ jobs:
           IGNORED_LANGUAGES: ""
           TARGET_PATH: README.md
           STORE_PATH: .github/waka_store.json
+          SUMMARY_DATE: ${{ inputs.summary_date }}
         run: |
           echo "Starting WakaTime accumulation script..."
           python .github/workflows/scripts/update_waka_readme.py
