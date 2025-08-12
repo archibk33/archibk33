@@ -1,18 +1,19 @@
 {
   "days": {
     "2025-08-10": {
-      "total_seconds": 4673,
+      "total_seconds": 21430,
       "languages": {
-        "Markdown": 2294.448,
-        "YAML": 1506.186,
-        "Python": 864.3,
-        "Bash": 8.273
+        "Python": 10877.715,
+        "Bash": 5650.694,
+        "Markdown": 3314.467,
+        "YAML": 1569.821,
+        "Other": 18.183
       }
     },
     "2025-08-11": {
-      "total_seconds": 1149,
+      "total_seconds": 1369,
       "languages": {
-        "Python": 1149.767
+        "Python": 1369.091
       }
     },
     "2025-08-12": {
@@ -21,7 +22,23 @@
         "YAML": 596.966,
         "Git": 114.602
       }
+    },
+    "2025-08-06": {
+      "total_seconds": 0,
+      "languages": {}
+    },
+    "2025-08-07": {
+      "total_seconds": 0,
+      "languages": {}
+    },
+    "2025-08-08": {
+      "total_seconds": 0,
+      "languages": {}
+    },
+    "2025-08-09": {
+      "total_seconds": 0,
+      "languages": {}
     }
   },
-  "updated_at": "2025-08-12T12:42:24.338172Z"
+  "updated_at": "2025-08-12T12:43:22.012296Z"
 }
