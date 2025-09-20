@@ -102,6 +102,40 @@ class Developer {
   - Cisco Routing & Switching
   - Software architecture
 
+## 📂 Проекты
+
+### 🎓 Учебные
+- [architecture-insuretech](https://github.com/archibk33/architecture-insuretech)
+- [archibk33-quantumforge-warhammer-rag-bot](https://github.com/archibk33/archibk33-quantumforge-warhammer-rag-bot)
+- [architecture--alexandrite](https://github.com/archibk33/architecture--alexandrite)
+- [architecture-propdevelopment](https://github.com/archibk33/architecture-propdevelopment)
+- [architecture-black_friday](https://github.com/archibk33/architecture-black_friday)
+- [architecture-standart](https://github.com/archibk33/architecture-standart)
+- [architecture-cinemaabyss](https://github.com/archibk33/architecture-cinemaabyss)
+- [architecture-warmhouse](https://github.com/archibk33/architecture-warmhouse)
+- [java-kanban](https://github.com/archibk33/java-kanban)
+- [slozhno-sosredotochitsya](https://github.com/archibk33/slozhno-sosredotochitsya)
+- [posmotri_v_okno](https://github.com/archibk33/posmotri_v_okno)
+- [ono-tebe-nado](https://github.com/archibk33/ono-tebe-nado)
+
+### 🔧 Петпроекты
+- [stat_stop_smoking](https://github.com/archibk33/stat_stop_smoking) — запущен
+- [space-archiboard](https://github.com/archibk33/space-archiboard) — в разработке
+- [resume](https://github.com/archibk33/resume) — в разработке
+- [RingerFX](https://github.com/GitArchi/RingerFX) — рабочий проект: Java FX VoIP клиент
+- [FreeNum](https://github.com/GitArchi/FreeNum) — Yii2 модуль: поиск свободного номера по маске
+
+### 📚 Общее
+- [madr](https://github.com/archibk33/madr)
+- [0pdd](https://github.com/archibk33/0pdd)
+- [System-Design-Playbook](https://github.com/archibk33/System-Design-Playbook)
+- [linux](https://github.com/archibk33/linux)
+- [P-awesome-system-design-high-level](https://github.com/archibk33/P-awesome-system-design-high-level)
+- [books](https://github.com/archibk33/books)
+- [system-design-roadmap](https://github.com/archibk33/system-design-roadmap)
+- [Essential-Math-For-AI](https://github.com/archibk33/Essential-Math-For-AI)
+- [Catalogue](https://github.com/archibk33/Catalogue)
+
  
 ## 📬 Контакты
 - 📱 Telegram: [@tirexswa](https://t.me/tirexswa)  
