@@ -148,7 +148,7 @@ My coding time 😤
 
 ## ⏱️ My coding time
 
-**From:** 06 August 2025  —  **To:** 27 September 2025
+**From:** 06 August 2025  —  **To:** 28 September 2025
 
 **Total Time:** 17h 14m
 
