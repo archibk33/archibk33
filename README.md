@@ -105,6 +105,7 @@ class Developer {
 ## 📂 Проекты
 
 ### 🎓 Учебные
+- [architecture-bionicpro](https://github.com/archibk33/architecture-bionicpro)
 - [architecture-insuretech](https://github.com/archibk33/architecture-insuretech)
 - [archibk33-quantumforge-warhammer-rag-bot](https://github.com/archibk33/archibk33-quantumforge-warhammer-rag-bot)
 - [architecture--alexandrite](https://github.com/archibk33/architecture--alexandrite)
